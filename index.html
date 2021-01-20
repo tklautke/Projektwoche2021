@@ -1,0 +1,331 @@
+<html>
+
+<head>
+    <script src="./js/styling.js"></script>
+    <script>
+
+        var blackBackground;
+        var gap = 3
+        var cellSize = 65
+        var discLayer;
+        var turn = 1;
+
+
+
+
+        /**
+         * State of the chips: 
+         * 0 = there is no chip
+         * 1 = there is a block chip
+         * 2 = there is a white chip
+         */
+
+        var discs = [
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 2, 1, 0, 0, 0],
+            [0, 0, 0, 1, 2, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0]
+        ]
+        window.onload = function () {
+            //Include in styling.js with it owns function
+            blackBackground = document.getElementById('blackBackground');
+            discLayer = document.getElementById('discLayer');
+            blackBackground.style.width = cellSize * 8 + (gap * 9);
+            blackBackground.style.height = cellSize * 8 + (gap * 9);
+            drawGreenSquares();
+            drawDiscs();
+        }
+
+        function drawGreenSquares() {
+            for (var row = 0; row < 8; row++) {
+                for (var column = 0; column < 8; column++) {
+                    var greenSquare = document.createElement('div');
+                    greenSquare.style.position = 'absolute';
+                    greenSquare.style.height = cellSize;
+                    greenSquare.style.width = cellSize;
+                    greenSquare.style.backgroundColor = 'green';
+                    greenSquare.style.left = (cellSize + gap) * column + gap;
+                    greenSquare.style.top = (cellSize + gap) * row + gap;
+                    greenSquare.setAttribute('onclick', `clickedSquare(${row},${column})`);
+                    blackBackground.appendChild(greenSquare);
+                }
+            }
+        }
+
+        function drawDiscs() {
+            discLayer.innerHTML = '';
+            for (var row = 0; row < 8; row++) {
+                for (var column = 0; column < 8; column++) {
+                    var value = discs[row][column];
+                    if (value == 0) {
+
+                    } else {
+                        var disc = document.createElement('div');
+                        disc.style.position = 'absolute';
+                        disc.style.height = cellSize;
+                        disc.style.width = cellSize;
+                        disc.style.borderRadius = '50%';
+                        disc.style.left = (cellSize + gap) * column + gap;
+                        disc.style.top = (cellSize + gap) * row + gap;
+
+                        if (value == 1) {
+                            disc.style.backgroundColor = 'black';
+                        }
+                        if (value == 2) {
+                            disc.style.backgroundColor = 'white';
+                        }
+
+                        discLayer.appendChild(disc);
+                    }
+                }
+            }
+        }
+
+        function canClickSpot(row, column) {
+            var affectedDiscs = getAffectedDiscs(row, column);
+
+            console.log(affectedDiscs)
+
+            if (affectedDiscs.length == 0) {
+                return false
+            } else {
+                return true
+            }
+        }
+
+        function getAffectedDiscs(row, column) {
+            var affectedDiscs = [];
+
+
+            //TODO: Auslagern
+            //right
+            var couldBeAffected = [];
+            var columnIterator = column;
+            while (columnIterator < 7) {
+                columnIterator += 1;
+                var valueAtSpot = discs[row][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: row,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //left
+            var couldBeAffected = [];
+            var columnIterator = column;
+            while (columnIterator > 0) {
+                columnIterator -= 1;
+                var valueAtSpot = discs[row][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: row,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //top
+            var couldBeAffected = [];
+            var rowIterator = row;
+            while (rowIterator > 0) {
+                rowIterator -= 1;
+                var valueAtSpot = discs[rowIterator][column];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: column
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //bottom
+            var couldBeAffected = [];
+            var rowIterator = row;
+            while (rowIterator < 7) {
+                rowIterator += 1;
+                var valueAtSpot = discs[rowIterator][column];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: column
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //bottom right
+            var couldBeAffected = [];
+            var rowIterator = row;
+            var columnIterator = column;
+            while (rowIterator < 7 && columnIterator < 7) {
+                rowIterator += 1;
+                columnIterator += 1;
+                var valueAtSpot = discs[rowIterator][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //bottom left
+            var couldBeAffected = [];
+            var rowIterator = row;
+            var columnIterator = column;
+            while (rowIterator < 7 && columnIterator > 0) {
+                rowIterator += 1;
+                columnIterator -= 1;
+                var valueAtSpot = discs[rowIterator][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //up left
+            var couldBeAffected = [];
+            var rowIterator = row;
+            var columnIterator = column;
+            while (rowIterator > 0 && columnIterator > 0) {
+                rowIterator -= 1;
+                columnIterator -= 1;
+                var valueAtSpot = discs[rowIterator][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            //TODO: Auslagern
+            //up right
+            var couldBeAffected = [];
+            var rowIterator = row;
+            var columnIterator = column;
+            while (rowIterator > 0 && columnIterator < 7) {
+                rowIterator -= 1;
+                columnIterator += 1;
+                var valueAtSpot = discs[rowIterator][columnIterator];
+                if (valueAtSpot == 0 || valueAtSpot == turn) {
+                    if (valueAtSpot == turn) {
+                        affectedDiscs = affectedDiscs.concat(couldBeAffected);
+                    }
+                    break
+                } else {
+                    var discLocation = {
+                        row: rowIterator,
+                        column: columnIterator
+                    }
+                    couldBeAffected.push(discLocation);
+                }
+            }
+
+            return affectedDiscs;
+
+        }
+
+        function flipDiscs(affectedDiscs) {
+            for (var i = 0; i < affectedDiscs.length; i++) {
+                var spot = affectedDiscs[i];
+
+                if (discs[spot.row][spot.column] == 1) {
+                    discs[spot.row][spot.column] = 2;
+                } else {
+                    discs[spot.row][spot.column] = 1;
+                }
+
+            }
+
+        }
+
+        function clickedSquare(row, column) {
+
+            console.log(discs[row][column])
+
+            if (discs[row][column] != 0) {
+                return;
+            }
+
+
+
+            if (canClickSpot(row, column) == true) {
+                var affectedDiscs = getAffectedDiscs(row, column);
+                flipDiscs(affectedDiscs);
+                discs[row][column] = turn;
+                if (turn == 1) {
+                    turn = 2
+                } else {
+                    turn = 1
+                }
+                drawDiscs();
+            }
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <div id="blackBackground" style="position: absolute; left: 0; top: 0; background-color: black;"></div>
+
+    <div id="discLayer"></div>
+</body>
+
+</html>
