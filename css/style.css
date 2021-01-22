@@ -1,0 +1,16 @@
+#blackBackground{
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+}
+
+#score{
+    position: absolute;
+    top: 550px
+}
+
+#resetBtn{
+    position: absolute;
+    top: 600px
+}
