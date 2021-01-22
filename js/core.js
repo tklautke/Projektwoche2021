@@ -30,7 +30,7 @@ window.onload = function() {
     discLayer = document.getElementById('discLayer');
     blackBackground.style.width = `${cellSize * 8 + (gap * 9)}px`;
     blackBackground.style.height = `${cellSize * 8 + (gap * 9)}px`;
-    drawGreenSquares();
+    drawSquares();
     drawDiscs();
     drawCanMoveLayer()
 }

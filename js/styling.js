@@ -1,9 +1,4 @@
-//Disc Color one = #E83151
-//Disc Color two = #2DE1FC
-//Game field = #97A7B3
-
-
-function drawGreenSquares() {
+function drawSquares() {
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
             const greenSquare = document.createElement('div');
@@ -24,9 +19,7 @@ function drawDiscs() {
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
             let value = discs[row][column];
-            if (value === 0) {
-
-            } else {
+            if (value !== 0) {
                 const disc = document.createElement('div');
                 disc.style.position = 'absolute';
                 disc.style.height = cellSize - 6;
