@@ -9,14 +9,13 @@
         var cellSize = 65
         var discLayer;
         var turn = 1;
-
-
+        var scoreLabel;
 
 
         /**
-         * State of the chips: 
+         * State of the chips:
          * 0 = there is no chip
-         * 1 = there is a block chip
+         * 1 = there is a black chip
          * 2 = there is a white chip
          */
 
@@ -32,6 +31,7 @@
         ]
         window.onload = function () {
             //Include in styling.js with it owns function
+            scoreLabel = document.getElementById('score');
             blackBackground = document.getElementById('blackBackground');
             discLayer = document.getElementById('discLayer');
             blackBackground.style.width = cellSize * 8 + (gap * 9);
@@ -87,9 +87,6 @@
 
         function canClickSpot(row, column) {
             var affectedDiscs = getAffectedDiscs(row, column);
-
-            console.log(affectedDiscs)
-
             if (affectedDiscs.length == 0) {
                 return false
             } else {
@@ -296,14 +293,9 @@
         }
 
         function clickedSquare(row, column) {
-
-            console.log(discs[row][column])
-
             if (discs[row][column] != 0) {
                 return;
             }
-
-
 
             if (canClickSpot(row, column) == true) {
                 var affectedDiscs = getAffectedDiscs(row, column);
@@ -315,17 +307,35 @@
                     turn = 1
                 }
                 drawDiscs();
+                redrawScore()
             }
         }
 
+        function redrawScore() {
+            var blackChip = 0;
+            var whiteChip = 0;
 
+            for (var row = 0; row < 8; row++) {
+                for (var column = 0; column < 8; column++) {
+                    var value = discs[row][column];
+                    if (value == 1) {
+                        blackChip += 1;
+                    } else if (value == 2) {
+                        whiteChip += 1;
+                    }
+                }
+            }
+            scoreLabel.innerHTML = `Black: ${blackChip} - White: ${whiteChip}`
+        }
     </script>
 </head>
 
 <body>
-    <div id="blackBackground" style="position: absolute; left: 0; top: 0; background-color: black;"></div>
+<div id="blackBackground" style="position: absolute; left: 0; top: 0; background-color: black;"></div>
 
-    <div id="discLayer"></div>
+<div id="discLayer"></div>
+
+<div id="score" style="position: absolute; top: 550px">Black: 2 - White 2</div>
 </body>
 
 </html>
