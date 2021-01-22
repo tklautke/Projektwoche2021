@@ -6,6 +6,8 @@ let turn = 1;
 let scoreLabel;
 let gameOver = false;
 let canMoveLayer;
+let playerOne;
+let playerTwo;
 
 /**
  * State of the chips:
@@ -30,10 +32,32 @@ window.onload = function() {
     discLayer = document.getElementById('discLayer');
     blackBackground.style.width = `${cellSize * 8 + (gap * 9)}px`;
     blackBackground.style.height = `${cellSize * 8 + (gap * 9)}px`;
+    playerOne = prompt("Please enter your name for Player 1:", "Player 1");
+    playerTwo = prompt("Please enter your name for Player 2:", "Player 2");
+    playerOne === null ? playerOne = "Player 1" : playerOne
+    playerTwo === null ? playerTwo = "Player 2" : playerTwo
+
+    while(playerOne.endsWith(' ')){
+        if(playerOne.endsWith(' ')){
+            const editUserNamePlayerOne = playerOne.slice(0, -1);
+            playerOne = editUserNamePlayerOne;
+        }
+    }
+
+    while(playerTwo.endsWith(' ')) {
+        if (playerTwo.endsWith(' ')) {
+            const editUserNamePlayerTwo = playerTwo.slice(0, -1);
+            playerTwo = editUserNamePlayerTwo;
+        }
+    }
+
+    scoreLabel.innerHTML = `${playerOne}: 2 - ${playerTwo}: 2`
     drawSquares();
     drawDiscs();
     drawCanMoveLayer()
 }
+
+
 
 function canClickSpot(id, row, column) {
     let affectedDiscs = getAffectedDiscs(id, row, column);

@@ -9,5 +9,5 @@ function redrawScore() {
             else if (value === 2) whiteChip += 1;
         }
     }
-    scoreLabel.innerHTML = `Black: ${blackChip} - White: ${whiteChip}`
+    scoreLabel.innerHTML = `${playerOne}: ${blackChip} - ${playerTwo}: ${whiteChip}`
 }
