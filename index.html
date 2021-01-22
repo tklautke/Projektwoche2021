@@ -10,6 +10,8 @@
         var discLayer;
         var turn = 1;
         var scoreLabel;
+        var gameover = false;
+        var canMoveLayer;
 
 
         /**
@@ -32,12 +34,14 @@
         window.onload = function () {
             //Include in styling.js with it owns function
             scoreLabel = document.getElementById('score');
+            canMoveLayer = document.getElementById('canMoveLayer');
             blackBackground = document.getElementById('blackBackground');
             discLayer = document.getElementById('discLayer');
             blackBackground.style.width = cellSize * 8 + (gap * 9);
             blackBackground.style.height = cellSize * 8 + (gap * 9);
             drawGreenSquares();
             drawDiscs();
+            drawCanMoveLayer()
         }
 
         function drawGreenSquares() {
@@ -85,8 +89,38 @@
             }
         }
 
-        function canClickSpot(row, column) {
-            var affectedDiscs = getAffectedDiscs(row, column);
+        function drawCanMoveLayer(){
+            canMoveLayer.innerHTML = '';
+            for (var row = 0; row < 8; row++) {
+                for (var column = 0; column < 8; column++) {
+                    var value = discs[row][column];
+                    if (value == 0 && canClickSpot(turn, row, column)) {
+                        var discOutline = document.createElement('div');
+                        discOutline.style.position = 'absolute';
+                        discOutline.style.height = cellSize - 2;
+                        discOutline.style.width = cellSize - 2;
+                        discOutline.style.borderRadius = '50%';
+                        discOutline.style.left = (cellSize + gap) * column + gap;
+                        discOutline.style.top = (cellSize + gap) * row + gap;
+                        discOutline.style.zIndex = "2";
+
+                        if (turn == 1) {
+                            discOutline.style.border = '2px solid black'
+                        }
+                        if (turn == 2) {
+                            discOutline.style.border = '2px solid white'
+                        }
+
+                        discOutline.setAttribute('onclick', `clickedSquare(${row},${column})`);
+
+                        discLayer.appendChild(discOutline);
+                    }
+                }
+            }
+        }
+
+        function canClickSpot(id, row, column) {
+            var affectedDiscs = getAffectedDiscs(id, row, column);
             if (affectedDiscs.length == 0) {
                 return false
             } else {
@@ -94,7 +128,7 @@
             }
         }
 
-        function getAffectedDiscs(row, column) {
+        function getAffectedDiscs(id, row, column) {
             var affectedDiscs = [];
 
 
@@ -105,8 +139,8 @@
             while (columnIterator < 7) {
                 columnIterator += 1;
                 var valueAtSpot = discs[row][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -126,8 +160,8 @@
             while (columnIterator > 0) {
                 columnIterator -= 1;
                 var valueAtSpot = discs[row][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -147,8 +181,8 @@
             while (rowIterator > 0) {
                 rowIterator -= 1;
                 var valueAtSpot = discs[rowIterator][column];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -168,8 +202,8 @@
             while (rowIterator < 7) {
                 rowIterator += 1;
                 var valueAtSpot = discs[rowIterator][column];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -191,8 +225,8 @@
                 rowIterator += 1;
                 columnIterator += 1;
                 var valueAtSpot = discs[rowIterator][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -214,8 +248,8 @@
                 rowIterator += 1;
                 columnIterator -= 1;
                 var valueAtSpot = discs[rowIterator][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -237,8 +271,8 @@
                 rowIterator -= 1;
                 columnIterator -= 1;
                 var valueAtSpot = discs[rowIterator][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -260,8 +294,8 @@
                 rowIterator -= 1;
                 columnIterator += 1;
                 var valueAtSpot = discs[rowIterator][columnIterator];
-                if (valueAtSpot == 0 || valueAtSpot == turn) {
-                    if (valueAtSpot == turn) {
+                if (valueAtSpot == 0 || valueAtSpot == id) {
+                    if (valueAtSpot == id) {
                         affectedDiscs = affectedDiscs.concat(couldBeAffected);
                     }
                     break
@@ -293,22 +327,39 @@
         }
 
         function clickedSquare(row, column) {
+            if(gameover) return;
             if (discs[row][column] != 0) {
                 return;
             }
 
-            if (canClickSpot(row, column) == true) {
-                var affectedDiscs = getAffectedDiscs(row, column);
+            if (canClickSpot(turn, row, column) == true) {
+                var affectedDiscs = getAffectedDiscs(turn, row, column);
                 flipDiscs(affectedDiscs);
                 discs[row][column] = turn;
-                if (turn == 1) {
-                    turn = 2
-                } else {
-                    turn = 1
+
+                if(turn == 1 && canMove(2)) turn = 2;
+                else if  (turn == 2 && canMove(1)) turn = 1;
+
+                if (canMove(1) == false && canMove(2) == false){
+                    alert("Game Over");
+                    gameover = true;
                 }
+
                 drawDiscs();
-                redrawScore()
+                drawCanMoveLayer();
+                redrawScore();
             }
+        }
+
+        function canMove(id){
+            for (var row = 0; row < 8; row++) {
+                for (var column = 0; column < 8; column++) {
+                    if(canClickSpot(id, row, column)){
+                        return true
+                    }
+                }
+            }
+            return false;
         }
 
         function redrawScore() {
@@ -334,6 +385,8 @@
 <div id="blackBackground" style="position: absolute; left: 0; top: 0; background-color: black;"></div>
 
 <div id="discLayer"></div>
+
+<div id="canMoveLayer"></div>
 
 <div id="score" style="position: absolute; top: 550px">Black: 2 - White 2</div>
 </body>
