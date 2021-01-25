@@ -57,12 +57,11 @@ window.onload = function() {
     drawCanMoveLayer()
 }
 
-
-
 function canClickSpot(id, row, column) {
     let affectedDiscs = getAffectedDiscs(id, row, column);
     return affectedDiscs.length !== 0;
 }
+
 function flipDiscs(affectedDiscs) {
     for (let i = 0; i < affectedDiscs.length; i++) {
         const spot = affectedDiscs[i];
@@ -87,10 +86,6 @@ function clickedSquare(row, column) {
         if(turn === 1 && canMove(2)) turn = 2;
         else if  (turn === 2 && canMove(1)) turn = 1;
 
-        if (canMove(1) === false && canMove(2) === false){
-            alert("Game Over");
-            gameOver = true;
-        }
         drawDiscs();
         drawCanMoveLayer();
         redrawScore();
