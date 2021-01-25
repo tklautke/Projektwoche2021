@@ -57,12 +57,11 @@ window.onload = function() {
     drawCanMoveLayer()
 }
 
-
-
 function canClickSpot(id, row, column) {
     let affectedDiscs = getAffectedDiscs(id, row, column);
     return affectedDiscs.length !== 0;
 }
+
 function flipDiscs(affectedDiscs) {
     for (let i = 0; i < affectedDiscs.length; i++) {
         const spot = affectedDiscs[i];
