@@ -13,11 +13,11 @@ function redrawScore() {
     if(blackChip + whiteChip === 64) {
         console.log("In")
         if (blackChip < whiteChip) {
-            if(confirm(`Player "${playerTwo}" has won \n Please press "ok" to start a new game`)){
+            if(confirm(`Player "${playerTwo}" has won \nPlease press "ok" to start a new game`)){
                 location.reload();
             }
         } else if (blackChip > whiteChip) {
-            if(confirm(`Player "${playerOne}" has won \n Please press "ok" to start a new game`)){
+            if(confirm(`Player "${playerOne}" has won \nPlease press "ok" to start a new game`)){
                 location.reload();
             }
         } else if (blackChip === whiteChip) {
