@@ -2,8 +2,6 @@ function redrawScore() {
     let blackChip = 0;
     let whiteChip = 0;
 
-    console.log("Hello")
-
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
             const value = discs[row][column];
@@ -12,8 +10,6 @@ function redrawScore() {
         }
     }
 
-
-    console.log("Out")
     if(blackChip + whiteChip === 64) {
         console.log("In")
         if (blackChip < whiteChip) {
@@ -30,7 +26,6 @@ function redrawScore() {
             }
         }
     }
-
 
     scoreLabel.innerHTML = `${playerOne}: ${blackChip} - ${playerTwo}: ${whiteChip}`
 }

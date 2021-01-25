@@ -86,10 +86,6 @@ function clickedSquare(row, column) {
         if(turn === 1 && canMove(2)) turn = 2;
         else if  (turn === 2 && canMove(1)) turn = 1;
 
-        if (canMove(1) === false && canMove(2) === false){
-            alert("Game Over");
-            gameOver = true;
-        }
         drawDiscs();
         drawCanMoveLayer();
         redrawScore();
